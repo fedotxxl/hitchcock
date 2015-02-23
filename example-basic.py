@@ -29,6 +29,8 @@ class MainForm(npyscreen.Form):
         self.curses_pad.hline(2, 0, curses.ACS_HLINE, MAXX-1)
 
     def create(self):
+        suggestion_highlight_color = self.theme_manager.findPair(self, 'CONTROL')
+
         self.wStatus1 = self.add(self.__class__.STATUS_WIDGET_CLASS,  rely=0,
                                         relx=self.__class__.STATUS_WIDGET_X_OFFSET,
                                         editable=False,
@@ -40,6 +42,15 @@ class MainForm(npyscreen.Form):
                                         relx=self.__class__.STATUS_WIDGET_X_OFFSET,
                                         editable=True,
                                         )
+
+        self.filter.value = "hello.suggestion"
+        self.filter._highlightingdata = [curses.A_NORMAL] * 300
+        self.filter.syntax_highlighting = True
+
+        for i in range(4, 20):
+            self.filter._highlightingdata[i] = suggestion_highlight_color
+
+        self.filter.cursor_position = 3
 
         self.wStatus2 = self.add(self.__class__.STATUS_WIDGET_CLASS,  rely=2,
                                         relx=self.__class__.STATUS_WIDGET_X_OFFSET,
